@@ -6,14 +6,6 @@ object Formats {
 
 import Formats.formats
 
-case class Request(clientId: Long, baseNum: Int) {
-  def toMessage = Serialization.write(this) + "\n"
-}
-
-object Request {
-  def apply(line: String) = Serialization.read[Request](line)
-}
-
 case class Message(num: Int) {
   def toMessage = Serialization.write(this) + "\n"
 }

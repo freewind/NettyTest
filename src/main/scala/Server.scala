@@ -49,7 +49,6 @@ class ServerHandler extends ChannelHandlerAdapter {
   override def channelActive(ctx: ChannelHandlerContext): Unit = {
     list = ctx :: list
     println("### new client active")
-    ctx.writeAndFlush(Message(id.incrementAndGet()).toMessage)
   }
 
   override def channelInactive(ctx: ChannelHandlerContext): Unit = {
