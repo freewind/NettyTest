@@ -12,7 +12,9 @@ import java.nio.charset.Charset
 object Server extends App {
 
   private val bossGroup = new NioEventLoopGroup()
-  private val workerGroup = new NioEventLoopGroup()
+  // Set the thread count to 1, so there is only one thread to send messages to all clients
+  // which can keep the order (but with bad performance)
+  private val workerGroup = new NioEventLoopGroup(1)
   private val bootstrap = new ServerBootstrap()
   bootstrap.group(bossGroup, workerGroup)
     .channel(classOf[NioServerSocketChannel])
@@ -59,7 +61,7 @@ class ServerHandler extends ChannelHandlerAdapter {
     case line: String => Lock.synchronized {
       println("### server read line: " + line)
       val newMsg = Message(num = id.incrementAndGet())
-      Thread.sleep(500)
+//      Thread.sleep(500)
       list.foreach { ccc =>
         println(s"### going to send to client ${ccc.hashCode()} with message: " + newMsg.toMessage)
         ccc.writeAndFlush(newMsg.toMessage)
